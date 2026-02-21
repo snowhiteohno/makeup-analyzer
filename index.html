@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luxe Beauty Analysis</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-image: url('background.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+    .serif {
+      font-family: 'Cormorant Garamond', serif;
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .glass-dark {
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+    }
+    .fade-in {
+      animation: fadeIn 0.6s ease-in;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .upload-area {
+      transition: all 0.3s ease;
+    }
+    .upload-area:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+    .product-card {
+      transition: all 0.3s ease;
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+  <div class="min-h-screen py-12 px-4">
+    <div class="max-w-7xl mx-auto">
+      <!-- Header -->
+      <header class="text-center mb-16 fade-in">
+        <h1 class="serif text-6xl md:text-7xl font-light text-white mb-4 drop-shadow-lg">Luxe Beauty Analysis</h1>
+        <p class="text-xl text-white font-light tracking-wide drop-shadow">Personalized Luxury Makeup Recommendations</p>
+      </header>
+
+      <!-- Upload Section -->
+      <div id="uploadSection" class="glass rounded-3xl shadow-2xl p-12 mb-12 max-w-3xl mx-auto fade-in">
+        <h2 class="serif text-4xl font-light text-gray-800 mb-6 text-center">Begin Your Analysis</h2>
+        <p class="text-gray-600 mb-8 text-center text-lg">Upload your photograph to receive curated luxury makeup recommendations</p>
+        
+        <label for="imageUpload" class="upload-area cursor-pointer block bg-white border-2 border-dashed border-gray-300 rounded-2xl p-16 mb-6 text-center">
+          <svg class="w-20 h-20 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+          </svg>
+          <p class="text-xl font-light text-gray-700 mb-2">Upload Image</p>
+          <p class="text-gray-500 text-sm">JPG, PNG up to 10MB</p>
+        </label>
+        <input type="file" id="imageUpload" accept="image/*" class="hidden">
+      </div>
+
+      <!-- Preview Section -->
+      <div id="previewSection" class="hidden glass rounded-3xl shadow-2xl p-12 mb-12 max-w-3xl mx-auto fade-in">
+        <h3 class="serif text-3xl font-light text-gray-800 mb-6 text-center">Your Image</h3>
+        <div class="flex justify-center mb-8">
+          <img id="imagePreview" class="max-w-full max-h-96 rounded-xl shadow-xl" alt="Preview">
+        </div>
+        <div class="text-center">
+          <button id="analyzeBtn" class="bg-black text-white px-12 py-4 rounded-full text-lg font-light tracking-wide hover:bg-gray-800 transition-all duration-300 shadow-lg">
+            Analyze
+          </button>
+        </div>
+      </div>
+
+      <!-- Loading Section -->
+      <div id="loadingSection" class="hidden glass rounded-3xl shadow-2xl p-16 mb-12 max-w-3xl mx-auto fade-in text-center">
+        <div class="inline-block animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-gray-800 mb-6"></div>
+        <p class="serif text-2xl text-gray-800">Analyzing your features...</p>
+      </div>
+
+      <!-- Results Section -->
+      <div id="resultsSection" class="hidden fade-in">
+        <!-- Analysis Summary -->
+        <div class="glass rounded-3xl shadow-2xl p-12 mb-12 max-w-4xl mx-auto">
+          <h2 class="serif text-5xl font-light text-gray-800 mb-8 text-center">Your Beauty Profile</h2>
+          
+          <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <div class="bg-white/50 rounded-xl p-6">
+              <h3 class="serif text-2xl text-gray-800 mb-3">Skin Tone</h3>
+              <p id="skinTone" class="text-gray-700 text-lg font-light"></p>
+            </div>
+            <div class="bg-white/50 rounded-xl p-6">
+              <h3 class="serif text-2xl text-gray-800 mb-3">Undertone</h3>
+              <p id="undertone" class="text-gray-700 text-lg font-light"></p>
+            </div>
+          </div>
+
+          <div class="bg-white/50 rounded-xl p-6">
+            <h3 class="serif text-2xl text-gray-800 mb-3">Recommended Palette</h3>
+            <p id="paletteDesc" class="text-gray-700 text-lg font-light mb-4"></p>
+            <div id="colorPalette" class="flex flex-wrap gap-3"></div>
+          </div>
+        </div>
+
+        <!-- Luxury Products Section -->
+        <div class="mb-12">
+          <h2 class="serif text-5xl font-light text-white text-center mb-12 drop-shadow-lg">Curated Luxury Selections</h2>
+          
+          <!-- Foundation -->
+          <div class="mb-12">
+            <h3 class="serif text-4xl font-light text-white mb-6 drop-shadow-lg">Foundation</h3>
+            <div id="foundationProducts" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+          </div>
+
+          <!-- Eyeshadow Palettes -->
+          <div class="mb-12">
+            <h3 class="serif text-4xl font-light text-white mb-6 drop-shadow-lg">Eyeshadow Palettes</h3>
+            <div id="eyeshadowProducts" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+          </div>
+
+          <!-- Lipstick -->
+          <div class="mb-12">
+            <h3 class="serif text-4xl font-light text-white mb-6 drop-shadow-lg">Lipstick</h3>
+            <div id="lipstickProducts" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+          </div>
+
+          <!-- Blush -->
+          <div class="mb-12">
+            <h3 class="serif text-4xl font-light text-white mb-6 drop-shadow-lg">Blush</h3>
+            <div id="blushProducts" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+          </div>
+
+          <!-- Highlighter -->
+          <div class="mb-12">
+            <h3 class="serif text-4xl font-light text-white mb-6 drop-shadow-lg">Highlighter</h3>
+            <div id="highlighterProducts" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+          </div>
+        </div>
+
+        <!-- Try Again Button -->
+        <div class="text-center">
+          <button id="tryAgainBtn" class="glass px-12 py-4 rounded-full text-lg font-light tracking-wide hover:bg-white transition-all duration-300 shadow-lg">
+            New Analysis
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
